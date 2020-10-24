@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { EDIT_BORNYEAR } from '../queries/queries'
 
 const Authors = (props) => {
-  const [ name, setName ] = useState('')
+
   const [ setBornTo, setsetBornTo ] = useState('')
   const [ editBorn ] = useMutation(EDIT_BORNYEAR)
+  const [ name, setName ] = useState('')
 
   if (!props.show) {
     return null
   }
+
 
   const submit = (e) => {
     e.preventDefault()
@@ -49,12 +51,11 @@ const Authors = (props) => {
       </table>
       <h2>Set Birth year</h2>
       <form onSubmit={submit}>
-        <div>
-          name: <input onChange={(e) => setName(e.target.value)}/>
-        </div>
-        <div>
-          born: <input onChange={(e) => setsetBornTo(Number(e.target.value))}/>
-        </div>
+        <select value={name} onChange={(e) => setName(e.target.value)}>
+          <option>Choose an author to edit</option>
+          {props.authors.map(a => <option key={a.name} value={a.name}>{a.name}</option>)}
+        </select>
+        {name && <div>born <input onChange={(e) => setsetBornTo(Number(e.target.value))}/></div>}
         <button>update author</button>
       </form>
     </div>
