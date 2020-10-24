@@ -1,28 +1,26 @@
 
 import React, { useState } from 'react'
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
+import { ALL_AUTHORS, ALL_BOOKS } from './queries/queries'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 
-const ALL_AUTHORS = gql`
-query {
-  allAuthors {
-    name
-    born
-  }
-}
-`
+
 
 const App = () => {
   const [page, setPage] = useState('authors')
-  const result = useQuery(ALL_AUTHORS)
+  const authorResult = useQuery(ALL_AUTHORS)
+  const bookResult = useQuery(ALL_BOOKS)
 
-  if(result.loading){
+  if(authorResult.loading){
+    return null
+  }
+  if(bookResult.loading){
     return null
   }
 
-  console.log(result.data.allAuthors)
+  console.log(bookResult.data.allBooks)
 
   return (
     <div>
@@ -33,11 +31,12 @@ const App = () => {
       </div>
 
       <Authors
-        authors={result.data.allAuthors}
+        authors={authorResult.data.allAuthors}
         show={page === 'authors'}
       />
 
       <Books
+        books={bookResult.data.allBooks}
         show={page === 'books'}
       />
 
