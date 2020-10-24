@@ -20,8 +20,6 @@ const App = () => {
     return null
   }
 
-  console.log(bookResult.data.allBooks)
-
   return (
     <div>
       <div>
