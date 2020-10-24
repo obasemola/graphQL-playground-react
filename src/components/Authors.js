@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { EDIT_BORNYEAR } from '../queries/queries'
 
