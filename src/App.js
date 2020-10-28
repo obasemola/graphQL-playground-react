@@ -5,15 +5,15 @@ import { ALL_AUTHORS, ALL_BOOKS } from './queries/queries'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import Login from './components/Login'
 
 
 
 const App = () => {
   const [page, setPage] = useState('authors')
+  const [ token, setToken ] = useState(null)
   const authorResult = useQuery(ALL_AUTHORS)
   const bookResult = useQuery(ALL_BOOKS)
-
-  console.log(bookResult)
 
   if(authorResult.loading){
     return null
@@ -22,12 +22,25 @@ const App = () => {
     return null
   }
 
+  const loginPageShow = () => {
+    setPage('login')
+  }
+
+  const handleLogOut = () => {
+    setToken(null)
+    setPage('login')
+  }
+
+  console.log(token)
+
   return (
     <div>
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
+        {token !== null && <button onClick={() => setPage('add')}>add book</button>}
+        {token === null && <button onClick={loginPageShow}>login</button>}
+        {token !== null && <button onClick={handleLogOut}>logout</button>}
       </div>
 
       <Authors
@@ -42,6 +55,12 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+      />
+
+      <Login
+        show={page === 'login'}
+        setToken={setToken}
+        setPage={setPage}
       />
 
     </div>
