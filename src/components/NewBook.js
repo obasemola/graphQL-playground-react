@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import uuid from 'react-uuid'
 import { ADD_BOOK } from '../queries/queries'
 
 const NewBook = (props) => {
@@ -19,7 +18,7 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    createBook({ variables: { title, published: Number(published), author, id: uuid(), genres } })
+    createBook({ variables: { title, published: Number(published), author, genres } })
 
     console.log(title)
 

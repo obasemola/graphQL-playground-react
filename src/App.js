@@ -13,6 +13,8 @@ const App = () => {
   const authorResult = useQuery(ALL_AUTHORS)
   const bookResult = useQuery(ALL_BOOKS)
 
+  console.log(bookResult)
+
   if(authorResult.loading){
     return null
   }
