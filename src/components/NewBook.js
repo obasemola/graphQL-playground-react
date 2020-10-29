@@ -12,6 +12,8 @@ const NewBook = (props) => {
     onError: (error) => {
       console.log(error)
     },
+
+    //updating cache after adding new book
     update: (store, response) => {
       const currentlyStoredData = store.readQuery({ query: ALL_BOOKS })
       store.writeQuery({
@@ -33,9 +35,6 @@ const NewBook = (props) => {
     event.preventDefault()
 
     createBook({ variables: { title, published: Number(published), author, genres } })
-      .then((res) => console.log(res))
-
-
 
     setTitle('')
     setPublished('')

@@ -25,11 +25,8 @@ const App = () => {
     setToken(token)
   }, [])
 
-  // const some =  useQuery(GET_RECOMMENDATIONS, {
-  //   variables: { genre: userResult.favouriteGenre }
-  // })
 
-
+  //all check if data is still loading otherwise, it will return undefined
   if(authorResult.loading){
     return null
   }
@@ -39,16 +36,10 @@ const App = () => {
   if(user.loading){
     return null
   }
-  // if(reco.loading){
-  //   return null
-  // }
-
-  // console.log(reco)
 
   userResult = user.data.me
 
-  // console.log(some)
-
+  //setting recommendations with React
   // const recommendations = bookResult.data.allBooks.filter((book) => {
   //   return book.genres.includes(userResult.favouriteGenre)
   // })
@@ -57,7 +48,6 @@ const App = () => {
 
 
   // console.log(bookResult)
-
 
   const loginPageShow = () => {
     setPage('login')

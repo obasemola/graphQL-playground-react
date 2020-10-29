@@ -6,10 +6,15 @@ const Books = (props) => {
     return null
   }
 
+  //gathering all genres into an array
   let initialGenres = []
   props.books.map((book) => initialGenres = initialGenres.concat(book.genres))
+
+  // using the new data structure to make sure each item is unique
   const genres = [...new Set(initialGenres)]
 
+
+  //filtering books according to each genre
   let books = props.books.map((book) => {
     if(book.genres.includes(genre)){
       return book
@@ -18,6 +23,7 @@ const Books = (props) => {
     }
   })
 
+  //filtering according to each genre and including a filter for 'all genres as well'
   const returnedBooks = books.filter((book) => book !== null)
   books = genre === 'all genres' ? props.books : returnedBooks
 

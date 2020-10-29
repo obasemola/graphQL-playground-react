@@ -16,6 +16,8 @@ const Login = (props) => {
 
   useEffect(() => {
     if(result.data){
+
+      //extracting token from response and setting it to local storage
       const token = result.data.login.value
       localStorage.setItem('userToken', token)
       // console.log(token)
@@ -26,6 +28,7 @@ const Login = (props) => {
   const handleLogin = (e) => {
     e.preventDefault()
 
+    //important to always set token to localstorage after login so that client has access to it immediately
     login({ variables: { username, password } })
       .then((result) => localStorage.setItem('userToken', props.token))
 
