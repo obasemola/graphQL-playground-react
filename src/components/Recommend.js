@@ -1,15 +1,6 @@
 import React from 'react'
-import { useQuery } from '@apollo/client'
-import { GET_USER } from '../queries/queries'
 
 const Recommend = (props) => {
-  const user = useQuery(GET_USER)
-
-  if(user.loading){
-    return null
-  }
-
-  console.log(user)
 
   if(!props.show){
     return null
@@ -19,7 +10,27 @@ const Recommend = (props) => {
   return (
     <div>
       <h2>Recommendations</h2>
-      <p>books in your favourite genre</p>
+      <p>books in your favourite genre <b>{props.userResult.favouriteGenre}</b></p>
+      <table>
+        <tbody>
+          <tr>
+            <th></th>
+            <th>
+              author
+            </th>
+            <th>
+              published
+            </th>
+          </tr>
+          {props.recommendations.map((recommendation) => {
+            return <tr key={recommendation.title}>
+                    <td>{recommendation.title}</td>
+                    <td>{recommendation.author.name}</td>
+                    <td>{recommendation.published}</td>
+                   </tr>
+          })}
+        </tbody>
+      </table>
     </div>
   )
 }

@@ -5,7 +5,7 @@ import { LOGIN } from '../queries/queries'
 const Login = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  // const [error, setError] = useState('')
 
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
@@ -21,7 +21,7 @@ const Login = (props) => {
       console.log(token)
       props.setToken(token)
     }
-  }, [result.data])
+  }, [props, result.data])
 
   const handleLogin = (e) => {
     e.preventDefault()

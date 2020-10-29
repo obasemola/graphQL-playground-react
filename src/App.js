@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
-import { ALL_AUTHORS, ALL_BOOKS } from './queries/queries'
+import { ALL_AUTHORS, ALL_BOOKS, GET_USER } from './queries/queries'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -13,9 +13,9 @@ import Recommend from './components/Recommend'
 const App = () => {
   const [page, setPage] = useState('authors')
   const [ token, setToken ] = useState(null)
-  const [loggedinUser, setLoggedinUser] = useState('')
   const authorResult = useQuery(ALL_AUTHORS)
   const bookResult = useQuery(ALL_BOOKS)
+  const user = useQuery(GET_USER)
 
   useEffect(() => {
     const token = localStorage.getItem('userToken')
@@ -29,6 +29,17 @@ const App = () => {
   if(bookResult.loading){
     return null
   }
+  if(user.loading){
+    return null
+  }
+
+  const userResult = user.data.me
+  const recommendations = bookResult.data.allBooks.filter((book) => {
+    return book.genres.includes(userResult.favouriteGenre)
+  })
+
+  // console.log(recommendations)
+
 
   // console.log(bookResult)
 
@@ -78,6 +89,8 @@ const App = () => {
 
       <Recommend
         show={page === 'recommend'}
+        userResult={userResult}
+        recommendations={recommendations}
       />
 
     </div>
