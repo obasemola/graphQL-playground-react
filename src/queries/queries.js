@@ -32,17 +32,34 @@ export const GET_USER = gql`
   }
 `
 
+export const GET_RECOMMENDATIONS = gql`
+  query getRecommendations($genre: String!){
+    recommendations(genre: $genre) {
+      title
+      published
+      author {
+        name
+        born
+      }
+      genres
+    }
+  }
+`
+
 export const ADD_BOOK = gql`
 mutation createBook($title: String!, $published: Int!, $author: String!, $genres: [String!]!) {
   addBook(
-    published: $published,
     title: $title,
+    published: $published,
     author: $author,
     genres: $genres
   ) {
     title
     published
-    author
+    author{
+      name
+      born
+    }
     genres
   }
 }

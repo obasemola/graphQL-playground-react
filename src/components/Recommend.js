@@ -1,6 +1,12 @@
 import React from 'react'
+import { useQuery } from '@apollo/client'
+import { GET_RECOMMENDATIONS } from '../queries/queries'
 
 const Recommend = (props) => {
+
+  const recommendations =  useQuery(GET_RECOMMENDATIONS, {
+    variables: { genre: props.userResult.favouriteGenre }
+  })
 
   if(!props.show){
     return null
@@ -22,7 +28,7 @@ const Recommend = (props) => {
               published
             </th>
           </tr>
-          {props.recommendations.map((recommendation) => {
+          {recommendations.data.recommendations.map((recommendation) => {
             return <tr key={recommendation.title}>
                     <td>{recommendation.title}</td>
                     <td>{recommendation.author.name}</td>

@@ -18,7 +18,7 @@ const Login = (props) => {
     if(result.data){
       const token = result.data.login.value
       localStorage.setItem('userToken', token)
-      console.log(token)
+      // console.log(token)
       props.setToken(token)
     }
   }, [props, result.data])

@@ -21,8 +21,6 @@ const Books = (props) => {
   const returnedBooks = books.filter((book) => book !== null)
   books = genre === 'all genres' ? props.books : returnedBooks
 
-  console.log(genre)
-  console.log(books)
 
 
   // console.log(initialGenres)
@@ -31,6 +29,7 @@ const Books = (props) => {
   const genreClick = (e) => {
     // console.log(e.target.name)
     setGenre(e.target.name)
+    console.log(genre)
   }
 
 
@@ -60,7 +59,7 @@ const Books = (props) => {
         </tbody>
       </table>
       {genres.map((genre) => <button onClick={genreClick} name={genre} key={genre}>{genre}</button>)}
-      <button>all genres</button>
+      <button onClick={() => setGenre('all genres')}>all genres</button>
     </div>
   )
 }
