@@ -9,16 +9,17 @@ const Login = (props) => {
 
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
-      setError(error.graphQLErrors[0].message)
+      console.log(error)
+      // setError(error.graphQLErrors[0].message)
     }
   })
 
   useEffect(() => {
     if(result.data){
       const token = result.data.login.value
+      localStorage.setItem('userToken', token)
       console.log(token)
       props.setToken(token)
-      localStorage.setItem('userToken', token)
     }
   }, [result.data])
 
@@ -26,9 +27,12 @@ const Login = (props) => {
     e.preventDefault()
 
     login({ variables: { username, password } })
+      .then((result) => localStorage.setItem('userToken', props.token))
+
     props.setPage('authors')
     setUsername('')
     setPassword('')
+
 
   }
 

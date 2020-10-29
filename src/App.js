@@ -1,19 +1,27 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { ALL_AUTHORS, ALL_BOOKS } from './queries/queries'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
+import Recommend from './components/Recommend'
 
 
 
 const App = () => {
   const [page, setPage] = useState('authors')
   const [ token, setToken ] = useState(null)
+  const [loggedinUser, setLoggedinUser] = useState('')
   const authorResult = useQuery(ALL_AUTHORS)
   const bookResult = useQuery(ALL_BOOKS)
+
+  useEffect(() => {
+    const token = localStorage.getItem('userToken')
+    setToken(token)
+  }, [])
+
 
   if(authorResult.loading){
     return null
@@ -22,6 +30,9 @@ const App = () => {
     return null
   }
 
+  // console.log(bookResult)
+
+
   const loginPageShow = () => {
     setPage('login')
   }
@@ -29,9 +40,10 @@ const App = () => {
   const handleLogOut = () => {
     setToken(null)
     setPage('login')
+    localStorage.clear()
   }
 
-  console.log(token)
+  // console.log(token)
 
   return (
     <div>
@@ -39,6 +51,7 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         {token !== null && <button onClick={() => setPage('add')}>add book</button>}
+        {token !== null && <button onClick={() => setPage('recommend')}>recommend</button>}
         {token === null && <button onClick={loginPageShow}>login</button>}
         {token !== null && <button onClick={handleLogOut}>logout</button>}
       </div>
@@ -61,6 +74,10 @@ const App = () => {
         show={page === 'login'}
         setToken={setToken}
         setPage={setPage}
+      />
+
+      <Recommend
+        show={page === 'recommend'}
       />
 
     </div>
