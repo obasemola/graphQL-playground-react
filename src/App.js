@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
-import { ALL_AUTHORS, ALL_BOOKS, GET_USER, GET_RECOMMENDATIONS } from './queries/queries'
+import { ALL_AUTHORS, ALL_BOOKS, GET_USER } from './queries/queries'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -18,6 +18,7 @@ const App = () => {
   const user = useQuery(GET_USER)
 
   let userResult
+
 
 
   useEffect(() => {
@@ -37,7 +38,11 @@ const App = () => {
     return null
   }
 
-  userResult = user.data.me
+
+    userResult = user.data.me
+    // console.log(userResult)
+
+  
 
   //setting recommendations with React
   // const recommendations = bookResult.data.allBooks.filter((book) => {
@@ -94,7 +99,7 @@ const App = () => {
 
       <Recommend
       show={page === 'recommend'}
-      userResult={userResult}
+      // userResult={userResult}
       // recommendations={recommendations}
     />
 
