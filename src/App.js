@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
-import { ALL_AUTHORS, ALL_BOOKS, GET_USER } from './queries/queries'
+import { useQuery, useSubscription, useApolloClient } from '@apollo/client'
+import { ALL_AUTHORS, ALL_BOOKS, BOOK_ADDED } from './queries/queries'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -15,34 +14,44 @@ const App = () => {
   const [ token, setToken ] = useState(null)
   const authorResult = useQuery(ALL_AUTHORS)
   const bookResult = useQuery(ALL_BOOKS)
-  const user = useQuery(GET_USER)
-
-  let userResult
-
-
+  const client = useApolloClient()
 
   useEffect(() => {
     const token = localStorage.getItem('userToken')
     setToken(token)
   }, [])
 
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) => {
+      set.map(p => p.id).includes(object.id)
+    }
 
-  //all check if data is still loading otherwise, it will return undefined
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if(!includedIn(dataInStore.allBooks, addedBook)){
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) }
+      })
+    }
+  }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log(subscriptionData)
+      const addedBook = subscriptionData.data.bookAdded
+      window.alert(`${addedBook.title} added`)
+      updateCacheWith(addedBook)
+    }
+  })
+
+
+  //Both check if data is still loading otherwise, it will return undefined
   if(authorResult.loading){
     return null
   }
   if(bookResult.loading){
     return null
   }
-  if(user.loading){
-    return null
-  }
-
-
-    userResult = user.data.me
-    // console.log(userResult)
-
-  
 
   //setting recommendations with React
   // const recommendations = bookResult.data.allBooks.filter((book) => {
@@ -62,6 +71,7 @@ const App = () => {
     setToken(null)
     setPage('login')
     localStorage.clear()
+    client.resetStore()
   }
 
   // console.log(token)
@@ -99,8 +109,6 @@ const App = () => {
 
       <Recommend
       show={page === 'recommend'}
-      // userResult={userResult}
-      // recommendations={recommendations}
     />
 
     </div>

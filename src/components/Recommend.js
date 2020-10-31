@@ -29,11 +29,11 @@ const Recommend = (props) => {
     return null
   }
 
-  const userResult = data.me
-
   if(recloading){
     return null
   }
+
+  const userResult = data.me
 
 
   return (
