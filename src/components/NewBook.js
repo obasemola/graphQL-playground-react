@@ -13,17 +13,17 @@ const NewBook = (props) => {
       console.log(error)
     },
 
-    //updating cache after adding new book
-    update: (store, response) => {
-      const currentlyStoredData = store.readQuery({ query: ALL_BOOKS })
-      store.writeQuery({
-        query: ALL_BOOKS,
-        data: {
-          ...currentlyStoredData,
-          allBooks: [ ...currentlyStoredData.allBooks, response.data.addBook ]
-        }
-      })
-    }
+    //updating cache manually without subscriptions
+    // update: (store, response) => {
+    //   const currentlyStoredData = store.readQuery({ query: ALL_BOOKS })
+    //   store.writeQuery({
+    //     query: ALL_BOOKS,
+    //     data: {
+    //       ...currentlyStoredData,
+    //       allBooks: [ ...currentlyStoredData.allBooks, response.data.addBook ]
+    //     }
+    //   })
+    // }
   })
 
 
